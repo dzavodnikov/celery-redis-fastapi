@@ -1,0 +1,17 @@
+# Ignore VSCode configs.
+.vscode
+
+# Ignore temporary data.
+**/tmp
+
+# Ignore Docker user-specific configs.
+.env
+
+# Ignore config-files (in root project directory).
+/*.toml
+
+# Ignore Python-related stuff.
+**/venv
+**/.venv
+**/__pycache__
+**/.pytest_cache

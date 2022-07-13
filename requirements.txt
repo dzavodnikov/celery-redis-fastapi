@@ -1,0 +1,4 @@
+-r requirements-celery.txt
+-r requirements-server.txt
+
+black

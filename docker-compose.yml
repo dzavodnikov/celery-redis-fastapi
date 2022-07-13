@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7.0.3
+    hostname: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.celery.dev
+    environment:
+      CELERY_BROKER_URL: redis://redis
+      CELERY_RESULT_BACKEND: redis://redis
+    volumes:
+      - ./celery:/celery
+    depends_on:
+      - redis
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server.dev
+    environment:
+      CELERY_BROKER_URL: redis://redis
+      CELERY_RESULT_BACKEND: redis://redis
+    volumes:
+      - ./server:/server
+    ports:
+      - 8080:80
+    depends_on:
+      - redis
+      - celery

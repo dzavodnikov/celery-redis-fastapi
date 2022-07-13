@@ -1,0 +1,26 @@
+#
+# Build:
+#   $ docker build --tag celery-redis-fastapi_server:latest .
+#
+# Run:
+#   $ docker run -d -p 8080:80 celery-redis-fastapi_server:latest --name server
+#
+
+FROM python:3.10.4-slim
+
+EXPOSE 80
+
+WORKDIR /server
+
+COPY requirements-server.txt ./requirements.txt
+COPY constraints.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -c constraints.txt \
+    && rm requirements.txt constraints.txt
+
+COPY ./server ./
+
+# Production.
+#CMD uvicorn rest:app --host 0.0.0.0 --port 80 --workers 4
+
+# Development.
+CMD uvicorn rest:app --host 0.0.0.0 --port 80 --workers 4 --reload

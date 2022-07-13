@@ -1,0 +1,26 @@
+#
+# Build:
+#   $ docker build --tag celery-redis-fastapi_celery:latest .
+#
+# Run:
+#   $ docker run -d -p 8080:80 celery-redis-fastapi_celery:latest --name celery
+#
+
+FROM python:3.10.4-slim
+
+EXPOSE 6379
+
+WORKDIR /celery
+
+COPY requirements-celery.txt ./requirements.txt
+COPY constraints.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -c constraints.txt \
+    && rm requirements.txt constraints.txt
+
+COPY ./celery ./
+
+# Production.
+#CMD celery --app tasks worker --loglevel=INFO -E
+
+# Development.
+CMD watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery --app tasks worker --loglevel=INFO -E
