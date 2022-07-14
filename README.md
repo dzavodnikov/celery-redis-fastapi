@@ -46,7 +46,7 @@ with [FastAPI](https://fastapi.tiangolo.com/) in [Docker](https://www.docker.com
 6. Run REST server (that will updated automatically after file modification):
 
    ```bash
-   (venv) uvicorn rest:app --host 0.0.0.0 --port 80 --workers 4 --reload
+   (venv) uvicorn rest:app --host localhost --port 80 --workers 4 --reload
    ```
 
 7. Go to <http://localhost:8080/docs> to see [Swagger UI](https://swagger.io/tools/swagger-ui/)
